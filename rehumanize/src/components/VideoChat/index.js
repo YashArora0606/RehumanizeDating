@@ -60,6 +60,7 @@ export default class VideoChat extends React.Component {
   }
 
   componentDidMount() {
+    console.log("occured")
     if (API_KEY && TOKEN && SESSION_ID) {
       this.setState({
         authenticated: true,
@@ -119,10 +120,10 @@ export default class VideoChat extends React.Component {
   }
 
   render() {
-    const { apiKey, sessionId, token, authenticated } = this.state.credentials
+    const { apiKey, sessionId, token } = this.state.credentials
     const { error, connection, publishVideo } = this.state
     return (
-      authenticated && (
+      this.state.authenticated && (
         <div>
           {/* <div id="sessionStatus">Session Status: {connection}</div> */}
           {error ? (
@@ -157,6 +158,6 @@ export default class VideoChat extends React.Component {
           </OTSession>
         </div>
       )
-    )
+    ) 
   }
 }
