@@ -1,10 +1,17 @@
 import './index.css'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import CONFIG from '../../config'
 const { FRONTEND_ADDRESS } = CONFIG
 
 function Navbar() {
+  const { authenticated } = window.localStorage
+  const [showLinks, setShowLinks] = useState(false)
+
+  useEffect(() => {
+    setShowLinks(JSON.parse(authenticated))
+  }, [authenticated])
+
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
@@ -13,7 +20,7 @@ function Navbar() {
         </a>
       </div>
 
-      {JSON.parse(window.localStorage.authenticated) && (
+      {showLinks && (
         <div className="navbar-menu">
           <div className="navbar-end">
             <a className="navbar-item" href={`${FRONTEND_ADDRESS}/dashboard`}>
