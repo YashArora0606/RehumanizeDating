@@ -1,5 +1,5 @@
 const queries = require('../database/queries')
-
+const { updateUserProfile } = require('../services/updateProfile')
 const express = require('express')
 const router = express.Router()
 
@@ -17,8 +17,18 @@ router.get('/profile', (req, res) => {
   res.send('GET profile')
 })
 
-router.put('/profile', (req, res) => {
-  res.send('PUT profile')
+router.put('/profile', async (req, res) => {
+  var { userID, name, bio, age, school, interests, profilePic } = req.query
+  var response = await updateUserProfile(
+    userID,
+    name,
+    bio,
+    age,
+    school,
+    interests,
+    profilePic,
+  )
+  res.send(response)
 })
 
 router.get('/candidates', (req, res) => {

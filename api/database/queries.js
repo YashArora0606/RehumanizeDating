@@ -42,6 +42,15 @@ const updateUserName = async (userID, name) => {
   const result = await pool.query(query, [userID, name])
 }
 
+const updateUserBio = async (userID, bio) => {
+  const query = `
+      UPDATE users
+      SET Bio = $2
+      WHERE ID = $1;`
+
+  const result = await pool.query(query, [userID, bio])
+}
+
 const updateUserAge = async (userID, age) => {
   const query = `
       UPDATE users
@@ -171,6 +180,7 @@ module.exports = {
   getUserProfile,
   createUser,
   updateUserName,
+  updateUserBio,
   updateUserAge,
   updateUserInterests,
   updateUserProfilePicture,
