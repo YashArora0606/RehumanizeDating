@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import CONFIG from '../../config'
-
-const { BACKEND_ADDRESS } = CONFIG
-
+const { BACKEND_ADDRESS, FRONTEND_ADDRESS, CHAT } = CONFIG
 import './index.css'
+import socketIOClient from "socket.io-client";
+
+
 
 const SAMPLE_DATA = [
   {
@@ -51,7 +52,13 @@ function Dashboard() {
   const [isTransitioning, setIsTransitioning] = useState(false)
 
   useEffect(() => {
-    window.localStorage.authenticated = true
+    window.localStorage.authenticated = true;
+    
+    const socket = socketIOClient(BACKEND_ADDRESS);
+    socket.on("match", data => {
+      let {callID, swiper, swipee} = data;
+      window.location.href = FRONTEND_ADDRESS + "/chat/" + callID; 
+    });
   }, [])
 
   useEffect(() => {
@@ -65,15 +72,20 @@ function Dashboard() {
   const handleSwipe = (isSwipeUp) => {
     
     // Send swipe information to the backend
-    axios({
+    const swipeResponse = await axios({
       method: 'post',
       url: `${BACKEND_ADDRESS}/swipes/swipe`,
       data: {
         swiper : window.localStorage.getItem('userID'),
         swipee : candidates[index].id,
-        interested : false
+        interested : isSwipeUp
       }
     })
+
+    const callObject = swipeResponse.data;
+    if (callObject !== null){
+      window.location.href = FRONTEND_ADDRESS + "/chat/" + callObject.id; 
+    }
 
     setPreference(isSwipeUp ? 'up' : 'down')
     setTimeout(() => {

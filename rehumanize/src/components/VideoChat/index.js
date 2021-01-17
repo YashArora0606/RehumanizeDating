@@ -3,12 +3,12 @@ import './index.css'
 import './polyfills'
 import React from 'react'
 import { OTSession, OTPublisher, OTStreams, OTSubscriber } from 'opentok-react'
-
-import { SAMPLE_SERVER_BASE_URL, API_KEY, SESSION_ID, TOKEN } from './config'
+import { API_KEY } from './config'
 
 export default class VideoChat extends React.Component {
   constructor(props) {
     super(props)
+    
 
     this.state = {
       error: null,
@@ -59,40 +59,24 @@ export default class VideoChat extends React.Component {
     }
   }
 
-  componentDidMount() {
-    console.log("occured")
-    if (API_KEY && TOKEN && SESSION_ID) {
-      this.setState({
-        authenticated: true,
-        credentials: {
-          apiKey: API_KEY,
-          sessionId: SESSION_ID,
-          token: TOKEN,
-        },
-      })
-    } else {
-      fetch(SAMPLE_SERVER_BASE_URL + '/session')
-        .then((data) => data.json())
-        .then((data) => {
-          console.log(data)
+  async componentDidMount() {
+    
+    const callID = this.props.match.params.id;
+    const callResponse = await axios({
+      method: 'get',
+      url: `${BACKEND_ADDRESS}/calls/sessionAndToken`,
+      params: {callID}
+    })
 
-          
-          this.setState({
-            authenticated: true,
-            credentials: {
-              apiKey: API_KEY,
-              sessionId: SESSION_ID,
-              token: TOKEN,
-            },
-          })
-        })
-        .catch((err) => {
-          console.error('Failed to get session credentials', err)
-          alert(
-            'Failed to get opentok sessionId and token. Make sure you have updated the config.js file.',
-          )
-        })
-    }
+    const {sessionID, token} = callResponse.data;
+    this.setState({
+      authenticated: true,
+      credentials: {
+        apiKey: API_KEY,
+        sessionId: sessionID,
+        token: token,
+      },
+    })
   }
 
   onSessionError = (error) => {

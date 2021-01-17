@@ -14,6 +14,14 @@ function Profile({ history }) {
   const [school, setSchool] = useState('')
   const [interests, setInterests] = useState('')
 
+  useEffect(() => {
+    const socket = socketIOClient(BACKEND_ADDRESS);
+    socket.on("match", data => {
+      let {callID, swiper, swipee} = data;
+      window.location.href = FRONTEND_ADDRESS + "/chat/" + callID; 
+    });
+  }, [])
+
   const handleChange = (event, field) => {
     switch (field) {
       case 'gender':

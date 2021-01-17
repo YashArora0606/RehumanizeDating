@@ -11,7 +11,7 @@ function Routes() {
     <Switch>
       <Route exact path="/" component={Landing} />
       <Route exact path="/dashboard" component={Dashboard} />
-      <Route exact path="/chat" component={VideoChat} />
+      <Route exact path="/chat/:id?" component={VideoChat} />
       <Route exact path="/profile" component={Profile} />
     </Switch>
   )
