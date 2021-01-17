@@ -51,6 +51,7 @@ function Profile({ history }) {
   const handleSubmit = async (event) => {
     try {
       const profileData = {
+        userID: window.localStorage.userID,
         gender,
         genderPreference,
         bio,

@@ -29,9 +29,9 @@ function Navbar() {
             <a className="navbar-item" href={`${FRONTEND_ADDRESS}/dashboard`}>
               DASHBOARD
             </a>
-            <a className="navbar-item" href={`${FRONTEND_ADDRESS}/chat`}>
+            {/* <a className="navbar-item" href={`${FRONTEND_ADDRESS}/chat`}>
               CHAT
-            </a>
+            </a> */}
             <a className="navbar-item" href={`${FRONTEND_ADDRESS}/profile`}>
               PROFILE
             </a>

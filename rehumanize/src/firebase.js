@@ -19,10 +19,10 @@ const signInWithGoogle = async () => {
     data: userData,
   })
   console.log(loginResponse.data)
-  const { redirectUrl, retrievedUserData } = loginResponse.data
+  const { redirectUrl, userData: retrievedUserData } = loginResponse.data
 
-  window.localStorage.userData = retrievedUserData
-  window.localStorage.setItem('userID', retrievedUserData.id)
+  window.localStorage.userData = JSON.stringify(retrievedUserData)
+  window.localStorage.setItem('userID', retrievedUserData.userID)
   window.location.href = redirectUrl
 }
 

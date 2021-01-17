@@ -18,16 +18,20 @@ router.post('/login', async (req, res) => {
       name,
       profilePic,
     })
+    console.log('asdf')
+    console.log(savedUserData)
     res.status(200).send({
       redirectUrl: `${FRONTEND_ADDRESS}/dashboard`,
       userData: savedUserData,
     })
   } else {
+    console.log(userData)
     res.status(200).send({
       redirectUrl: `${FRONTEND_ADDRESS}/dashboard`,
       userData,
     })
   }
+  return
   // RETURN THE USER ID TO THE USER
 })
 

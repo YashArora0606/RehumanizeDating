@@ -3,7 +3,11 @@ import './index.css'
 import './polyfills'
 import React from 'react'
 import { OTSession, OTPublisher, OTStreams, OTSubscriber } from 'opentok-react'
+import axios from 'axios'
 import { API_KEY } from './config'
+import CONFIG from '../../config'
+
+const { BACKEND_ADDRESS } = CONFIG
 
 let prompts = [
   'What’s something not many people know about you?',
@@ -105,32 +109,15 @@ export default class VideoChat extends React.Component {
       params: { callID },
     })
 
-    if (API_KEY && TOKEN && SESSION_ID) {
-      this.setState({
-        authenticated: true,
-        credentials: {
-          apiKey: API_KEY,
-          sessionId: SESSION_ID,
-          token: TOKEN,
-        },
-      })
-    } else {
-      fetch(SAMPLE_SERVER_BASE_URL + '/session')
-        .then((data) => data.json())
-        .then((data) => {
-          console.log(data)
-
-          const { sessionID, token } = callResponse.data
-          this.setState({
-            authenticated: true,
-            credentials: {
-              apiKey: API_KEY,
-              sessionId: sessionID,
-              token: token,
-            },
-          })
-        })
-    }
+    const { sessionID, token } = callResponse.data
+    this.setState({
+      authenticated: true,
+      credentials: {
+        apiKey: API_KEY,
+        sessionId: sessionID,
+        token: token,
+      },
+    })
   }
 
   onSessionError = (error) => {

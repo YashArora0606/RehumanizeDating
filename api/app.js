@@ -11,22 +11,27 @@ const callsRouter = require('./routes/calls')
 const { FRONTEND_ADDRESS } = require('./config')
 
 const app = express()
-const http = require('http').createServer(app);
-const io = require('socket.io')(http);
+const server = require('http').createServer(app)
+const io = require('socket.io')(server, {
+  cors: {
+    origin: FRONTEND_ADDRESS,
+    methods: ['GET', 'POST'],
+  },
+})
 
 io.on('connection', (socket) => {
-  const handshakeData = socket.request;
+  const handshakeData = socket.request
   const userID = handshakeData._query['userID']
-  console.log("Socket connect userID:", userID);
+  console.log('Socket connect userID:', userID)
 
-  userIDToSocket.set(userID, socket);
-  
+  // userIDToSocket.set(userID, socket)
+  console.log('connect')
+
   socket.on('disconnect', () => {
-    userIDToSocket.delete(userID);
-    console.log("Socket disconnect userID:", userID);
-  });
-});
-
+    // userIDToSocket.delete(userID)
+    console.log('Socket disconnect userID:', userID)
+  })
+})
 
 const PORT = process.env.PORT || 3000
 
@@ -51,17 +56,16 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 
-app.use('/users', usersRouter);
-app.use('/calls', callsRouter);
-app.use('/swipes', swipesRouter);
+app.use('/users', usersRouter)
+app.use('/calls', callsRouter)
+app.use('/swipes', swipesRouter)
 
 app.get('/', (req, res) => {
   res.send('RehumanizeDating')
 })
 
-app.listen(PORT, () => {
-  console.log(`RehumanizeDating listening on PORT ${PORT}`);
+server.listen(PORT, () => {
+  console.log(`RehumanizeDating listening on PORT ${PORT}`)
 })
 
-
-module.exports = {app, io};
+module.exports = { app, io }

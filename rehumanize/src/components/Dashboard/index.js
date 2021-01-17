@@ -3,46 +3,45 @@ import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import axios from 'axios'
 import CONFIG from '../../config'
-const { BACKEND_ADDRESS, FRONTEND_ADDRESS, CHAT } = CONFIG
-import './index.css'
 import io from 'socket.io-client'
+const { BACKEND_ADDRESS, FRONTEND_ADDRESS, CHAT } = CONFIG
 
-// const SAMPLE_DATA = [
-//   {
-//     id: '007e199a-9646-4730-98fa-633032169758',
-//     name: 'Oustan Ding',
-//     bio: 'css is difficult',
-//     age: 69,
-//     school: 'university of waterloo',
-//     interests: ['piano', 'tetris', 'csgo'],
-//     profilePicture:
-//       'https://lh3.googleusercontent.com/a-/AOh14GjG95TCQctGJ4pnLkDrI8I4YCLydEt3SA9B4Ml0yw',
-//   },
-//   {
-//     id: '0384ea4b-27b3-4a7d-8bbb-329180da8e8e',
-//     name: 'Armanya Dalmia',
-//     bio: 'bae suzy',
-//     age: 420,
-//     school: 'university of waterloo',
-//     interests: ['sana', 'lit'],
-//   },
-//   {
-//     id: '3a5b3629-2c4a-47e6-8d0e-1f54794c9ff8',
-//     name: 'Yash Arora',
-//     bio: 'rose fan all day every day',
-//     age: 42069,
-//     school: 'university of waterloo',
-//     interests: ['rose'],
-//   },
-//   {
-//     id: '421ddb0a-2b78-4ad1-863d-a4dbbf95a057',
-//     name: 'Jonathan Cui',
-//     bio: 'brb calling grace',
-//     age: 4206942069,
-//     school: 'university of waterloo',
-//     interests: ['nodejs', 'battlecode', 'grace', 'wallstreetbets'],
-//   },
-// ]
+const SAMPLE_DATA = [
+  {
+    id: '007e199a-9646-4730-98fa-633032169758',
+    name: 'Oustan Ding',
+    bio: 'css is difficult',
+    age: 69,
+    school: 'university of waterloo',
+    interests: ['piano', 'tetris', 'csgo'],
+    profilePicture:
+      'https://lh3.googleusercontent.com/a-/AOh14GjG95TCQctGJ4pnLkDrI8I4YCLydEt3SA9B4Ml0yw',
+  },
+  {
+    id: '0384ea4b-27b3-4a7d-8bbb-329180da8e8e',
+    name: 'Armanya Dalmia',
+    bio: 'bae suzy',
+    age: 420,
+    school: 'university of waterloo',
+    interests: ['sana', 'lit'],
+  },
+  {
+    id: '3a5b3629-2c4a-47e6-8d0e-1f54794c9ff8',
+    name: 'Yash Arora',
+    bio: 'rose fan all day every day',
+    age: 42069,
+    school: 'university of waterloo',
+    interests: ['rose'],
+  },
+  {
+    id: '421ddb0a-2b78-4ad1-863d-a4dbbf95a057',
+    name: 'Jonathan Cui',
+    bio: 'brb calling grace',
+    age: 4206942069,
+    school: 'university of waterloo',
+    interests: ['nodejs', 'battlecode', 'grace', 'wallstreetbets'],
+  },
+]
 
 function Dashboard() {
   const [candidates, setCandidates] = useState(SAMPLE_DATA)
@@ -63,12 +62,15 @@ function Dashboard() {
     })
 
     const getCandidates = async () => {
-      const { userID, genderPreference } = window.localStorage.userData
+      const { userID, genderPreference } = JSON.parse(
+        window.localStorage.userData,
+      )
       const response = await axios({
         method: 'get',
         url: `${BACKEND_ADDRESS}/users/candidates?userID=${userID}&genderPref=${genderPreference}`,
       })
-      const candidates = response.data
+      const candidates =
+        response.data.length === 0 ? SAMPLE_DATA : response.data
       setCandidates(candidates)
     }
 
@@ -84,6 +86,16 @@ function Dashboard() {
   }, [index])
 
   const handleSwipe = async (isSwipeUp) => {
+    setPreference(isSwipeUp ? 'up' : 'down')
+    setTimeout(() => {
+      setIsTransitioning(true)
+      setTimeout(() => {
+        setIndex((index) => (index === candidates.length - 1 ? 0 : index + 1))
+        setIsTransitioning(false)
+        setPreference(null)
+      }, 500)
+    }, 100)
+
     // Send swipe information to the backend
     const swipeResponse = await axios({
       method: 'post',
@@ -99,16 +111,6 @@ function Dashboard() {
     if (callObject !== null) {
       window.location.href = FRONTEND_ADDRESS + '/chat/' + callObject.id
     }
-
-    setPreference(isSwipeUp ? 'up' : 'down')
-    setTimeout(() => {
-      setIsTransitioning(true)
-      setTimeout(() => {
-        setIndex((index) => (index === candidates.length - 1 ? 0 : index + 1))
-        setIsTransitioning(false)
-        setPreference(null)
-      }, 500)
-    }, 100)
   }
 
   return (
