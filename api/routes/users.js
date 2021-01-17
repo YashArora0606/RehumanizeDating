@@ -1,9 +1,14 @@
 const express = require('express')
 const router = express.Router()
 
+const { FRONTEND_ADDRESS } = require('../config')
+
 router.post('/login', (req, res) => {
   console.log(req.body)
-  res.send('login')
+  console.log(FRONTEND_ADDRESS)
+  res.status(200).send({
+    redirectUrl: `${FRONTEND_ADDRESS}/dashboard`,
+  })
 })
 
 router.get('/profile', (req, res) => {
