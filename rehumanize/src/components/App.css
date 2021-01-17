@@ -29,6 +29,30 @@ h4 {
   font-size: 1.5rem;
 }
 
+input {
+  border: 2px black solid;
+  padding: 4px;
+}
+
+input::placeholder {
+  font-family: Merriweather, sans-serif;
+}
+
+button {
+  padding: 12px;
+  background-color: #f8baca;
+  color: black;
+  cursor: pointer;
+  box-shadow: none;
+  border: none;
+  font-size: 1.5rem;
+}
+
+button:hover {
+  background-color: black;
+  color: white;
+}
+
 .App {
   height: 100vh;
 }

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { withRouter } from 'react-router'
 
 import './index.css'
 
@@ -130,4 +131,4 @@ function Dashboard() {
   )
 }
 
-export default Dashboard
+export default withRouter(Dashboard)
