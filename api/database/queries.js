@@ -144,6 +144,7 @@ const updateSessionID = async (ID, sessionID) => {
     WHERE ID = $1;
     `
   const result = await pool.query(query, [ID, sessionID])
+  console.log(result)
 }
 
 const getCall = async (ID) => {
