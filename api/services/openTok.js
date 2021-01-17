@@ -3,16 +3,24 @@ const { getCall, updateSessionID } = require('../database/queries');
 const apiKey = config.API_KEY;
 const apiSecret = config.API_SECRET;
 
+console.log("API KEY AND SECRET: ");
+console.log(apiKey)
+console.log(apiSecret)
+
 var OpenTok = require('opentok'),
 opentok = new OpenTok(apiKey, apiSecret);
 
 
 // THIS FUNCTION MAY BE PROBLEMATIC -- check for bugs starting here
 // creates a session and stores it in the associated call on DB
-const createSession = async (callID) => {
-    await opentok.createSession(async (err, session) => {
+var createSession = (callID, cbAfterSessionCreated) => {
+    console.log("** Creating session")
+    opentok.createSession(async (err, session) => {
+
+        console.log("** Create session callback: ", session);
         if (err) return console.log(err);
-        await updateSessionID(callID, session.sessionId);
+        await cbAfterSessionCreated(callID, session.sessionId);       
+        console.log("** Create session callback done")
         return;
     });
 }
@@ -28,20 +36,27 @@ const getSessionAndToken = async (callID) => {
     var call = await getCall(callID);
     var token;
     // session already exists
-    if (call.SessionID != null && call.SessionID.length > 0){
-        token = generateToken(call.SessionID);
-        return {sessionID: call.SessionID, token: token};
+    if (call.sessionID != null && call.sessionID.length > 0){
+        token = generateToken(call.sessionID);
+        return {sessionID: call.sessionID, token: token};
     } else {
     //session doesn't exist
-        await createSession(callID);
-        call = await getCall(callID);
-        if (call.SessionID != null && call.SessionID.length > 0){
-            token = generateToken(call.SessionID);
-            return {sessionID: call.SessionID, token: token};
-        } else {
-            console.error("Unable to create new session and token");
-            return {sessionID: null, token: null};
-        }
+        sessionAndTokenPromise = new Promise((resolve, reject) => {
+            
+            createSession(callID, async (callID, sessionID)=> {
+                if (sessionID != null && sessionID.length > 0){
+                    token = generateToken(sessionID);
+                    resolve({sessionID: sessionID, token: token});
+                } else {
+                    console.error("Unable to create new session and token");
+                    reject({sessionID: null, token: null});
+                }
+            });
+        })
+
+        var sessionAndToken = await sessionAndTokenPromise;
+        return sessionAndToken
+        
     }
 }
 
