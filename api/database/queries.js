@@ -27,7 +27,7 @@ const getCandidateProfiles = async (userID, genderPreference) => {
   const query = `
     SELECT * FROM users
     WHERE ID!=$1
-    AND GenderPreference=$2;
+    AND Gender=$2;
     `
   const result = await pool.query(query, [userID, genderPreference])
   return result ? result.rows : null
