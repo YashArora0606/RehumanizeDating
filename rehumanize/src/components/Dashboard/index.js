@@ -5,8 +5,7 @@ import axios from 'axios'
 import CONFIG from '../../config'
 const { BACKEND_ADDRESS, FRONTEND_ADDRESS, CHAT } = CONFIG
 import './index.css'
-import io from "socket.io-client";
-
+import io from 'socket.io-client'
 
 // const SAMPLE_DATA = [
 //   {
@@ -53,13 +52,15 @@ function Dashboard() {
   const [isTransitioning, setIsTransitioning] = useState(false)
 
   useEffect(() => {
-    window.localStorage.authenticated = true;
-    
-    const socket = io.connect(BACKEND_ADDRESS, {query: `userID=${window.localStorage.getItem('userID')}`});
-    socket.on("match", data => {
-      let {callID, swiper, swipee} = data;
-      window.location.href = FRONTEND_ADDRESS + "/chat/" + callID; 
-    });
+    window.localStorage.authenticated = true
+
+    const socket = io.connect(BACKEND_ADDRESS, {
+      query: `userID=${window.localStorage.getItem('userID')}`,
+    })
+    socket.on('match', (data) => {
+      let { callID, swiper, swipee } = data
+      window.location.href = FRONTEND_ADDRESS + '/chat/' + callID
+    })
 
     const getCandidates = async () => {
       const { userID, genderPreference } = window.localStorage.userData
@@ -82,21 +83,21 @@ function Dashboard() {
     }
   }, [index])
 
-  const handleSwipe = (isSwipeUp) => {
+  const handleSwipe = async (isSwipeUp) => {
     // Send swipe information to the backend
     const swipeResponse = await axios({
       method: 'post',
       url: `${BACKEND_ADDRESS}/swipes/swipe`,
       data: {
-        swiper : window.localStorage.getItem('userID'),
-        swipee : candidates[index].id,
-        interested : isSwipeUp
-      }
+        swiper: window.localStorage.getItem('userID'),
+        swipee: candidates[index].id,
+        interested: isSwipeUp,
+      },
     })
 
-    const callObject = swipeResponse.data;
-    if (callObject !== null){
-      window.location.href = FRONTEND_ADDRESS + "/chat/" + callObject.id; 
+    const callObject = swipeResponse.data
+    if (callObject !== null) {
+      window.location.href = FRONTEND_ADDRESS + '/chat/' + callObject.id
     }
 
     setPreference(isSwipeUp ? 'up' : 'down')

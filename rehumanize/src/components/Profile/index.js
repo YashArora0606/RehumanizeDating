@@ -1,8 +1,8 @@
 import './index.css'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router'
 import axios from 'axios'
-import io from "socket.io-client";
+import io from 'socket.io-client'
 
 import CONFIG from '../../config'
 const { BACKEND_ADDRESS, FRONTEND_ADDRESS } = CONFIG
@@ -16,11 +16,13 @@ function Profile({ history }) {
   const [interests, setInterests] = useState('')
 
   useEffect(() => {
-    const socket = io.connect(BACKEND_ADDRESS, {query: `userID=${window.localStorage.getItem('userID')}`});
-    socket.on("match", data => {
-      let {callID, swiper, swipee} = data;
-      window.location.href = FRONTEND_ADDRESS + "/chat/" + callID; 
-    });
+    const socket = io.connect(BACKEND_ADDRESS, {
+      query: `userID=${window.localStorage.getItem('userID')}`,
+    })
+    socket.on('match', (data) => {
+      let { callID, swiper, swipee } = data
+      window.location.href = FRONTEND_ADDRESS + '/chat/' + callID
+    })
   }, [])
 
   const handleChange = (event, field) => {
