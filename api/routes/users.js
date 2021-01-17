@@ -1,7 +1,10 @@
+const queries = require('../database/queries');
+
 const express = require('express')
 const router = express.Router()
 
 router.get('/login', (req, res) => {
+  queries.createUser()
   res.send('login')
 })
 
