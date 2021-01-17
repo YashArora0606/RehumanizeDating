@@ -207,10 +207,10 @@ const getCall = async (ID) => {
 const testCreateCall = async () => {
   var user1 = await createUser()
   var user2 = await createUser()
-  console.log('user1: ', user1)
-  console.log('user2: ', user2)
-  var callID = await createCall(true, user1, user2, '', 'startTime', 'endTime')
-  console.log('callID: ', callID)
+  // console.log('user1: ', user1)
+  // console.log('user2: ', user2)
+  // var callID = await createCall(true, user1, user2, '', 'startTime', 'endTime')
+  // console.log('callID: ', callID)
 }
 
 testCreateCall()

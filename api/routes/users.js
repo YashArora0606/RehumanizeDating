@@ -69,9 +69,9 @@ router.put('/profile', async (req, res) => {
 })
 
 router.get('/candidates', async (req, res) => {
-  var { userID, genderPref } = req.query
-  console.log(userID, genderPref)
-  var response = await queries.getCandidateProfiles(userID, genderPref)
+  var { userID, genderPreference } = req.query
+  console.log(userID, genderPreference)
+  var response = await queries.getCandidateProfiles(userID, genderPreference)
   res.send(response)
 })
 
