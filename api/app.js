@@ -14,6 +14,19 @@ const app = express()
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 
+io.on('connection', (socket) => {
+  const handshakeData = socket.request;
+  const userID = handshakeData._query['userID']
+  console.log("Socket connect userID:", userID);
+
+  userIDToSocket.set(userID, socket);
+  
+  socket.on('disconnect', () => {
+    userIDToSocket.delete(userID);
+    console.log("Socket disconnect userID:", userID);
+  });
+});
+
 
 const PORT = process.env.PORT || 3000
 
@@ -50,4 +63,5 @@ app.listen(PORT, () => {
   console.log(`RehumanizeDating listening on PORT ${PORT}`);
 })
 
-module.exports = {app, io}
+
+module.exports = {app, io};

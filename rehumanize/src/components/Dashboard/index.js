@@ -5,7 +5,7 @@ import axios from 'axios'
 import CONFIG from '../../config'
 const { BACKEND_ADDRESS, FRONTEND_ADDRESS, CHAT } = CONFIG
 import './index.css'
-import socketIOClient from "socket.io-client";
+import io from "socket.io-client";
 
 
 // const SAMPLE_DATA = [
@@ -55,12 +55,12 @@ function Dashboard() {
   useEffect(() => {
     window.localStorage.authenticated = true;
     
-    const socket = socketIOClient(BACKEND_ADDRESS);
+    const socket = io.connect(BACKEND_ADDRESS, {query: `userID=${window.localStorage.getItem('userID')}`});
     socket.on("match", data => {
       let {callID, swiper, swipee} = data;
       window.location.href = FRONTEND_ADDRESS + "/chat/" + callID; 
     });
-    
+
     const getCandidates = async () => {
       const { userID, genderPreference } = window.localStorage.userData
       const response = await axios({
@@ -88,17 +88,10 @@ function Dashboard() {
       method: 'post',
       url: `${BACKEND_ADDRESS}/swipes/swipe`,
       data: {
-<<<<<<< HEAD
         swiper : window.localStorage.getItem('userID'),
         swipee : candidates[index].id,
         interested : isSwipeUp
       }
-=======
-        swiper: '',
-        swipee: candidates[index].id,
-        interested: false,
-      },
->>>>>>> 5fdfc58b2188a6fa879a23c622adebd2289c366f
     })
 
     const callObject = swipeResponse.data;
