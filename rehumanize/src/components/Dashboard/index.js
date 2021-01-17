@@ -1,48 +1,49 @@
+import './index.css'
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
+import axios from 'axios'
 import CONFIG from '../../config'
 const { BACKEND_ADDRESS, FRONTEND_ADDRESS, CHAT } = CONFIG
 import './index.css'
 import socketIOClient from "socket.io-client";
 
 
-
-const SAMPLE_DATA = [
-  {
-    id: '007e199a-9646-4730-98fa-633032169758',
-    name: 'Oustan Ding',
-    bio: 'i fucking hate css',
-    age: 69,
-    school: 'university of shit',
-    interests: ['piano', 'tetris', 'csgo'],
-    profilePicture:
-      'https://lh3.googleusercontent.com/a-/AOh14GjG95TCQctGJ4pnLkDrI8I4YCLydEt3SA9B4Ml0yw',
-  },
-  {
-    id: '0384ea4b-27b3-4a7d-8bbb-329180da8e8e',
-    name: 'Armanya Dalmia',
-    bio: 'kinky sex 7/7',
-    age: 420,
-    school: 'university of shit',
-    interests: ['hentai', 'lit'],
-  },
-  {
-    id: '3a5b3629-2c4a-47e6-8d0e-1f54794c9ff8',
-    name: 'Yash Arora',
-    bio: 'rose simp all day every day',
-    age: 42069,
-    school: 'university of shit',
-    interests: ['rose'],
-  },
-  {
-    id: '421ddb0a-2b78-4ad1-863d-a4dbbf95a057',
-    name: 'Jonathan Cui',
-    bio: 'brb calling grace',
-    age: 4206942069,
-    school: 'university of shit',
-    interests: ['nodejs', 'battlecode', 'grace', 'wallstreetbets'],
-  },
-]
+// const SAMPLE_DATA = [
+//   {
+//     id: '007e199a-9646-4730-98fa-633032169758',
+//     name: 'Oustan Ding',
+//     bio: 'css is difficult',
+//     age: 69,
+//     school: 'university of waterloo',
+//     interests: ['piano', 'tetris', 'csgo'],
+//     profilePicture:
+//       'https://lh3.googleusercontent.com/a-/AOh14GjG95TCQctGJ4pnLkDrI8I4YCLydEt3SA9B4Ml0yw',
+//   },
+//   {
+//     id: '0384ea4b-27b3-4a7d-8bbb-329180da8e8e',
+//     name: 'Armanya Dalmia',
+//     bio: 'bae suzy',
+//     age: 420,
+//     school: 'university of waterloo',
+//     interests: ['sana', 'lit'],
+//   },
+//   {
+//     id: '3a5b3629-2c4a-47e6-8d0e-1f54794c9ff8',
+//     name: 'Yash Arora',
+//     bio: 'rose fan all day every day',
+//     age: 42069,
+//     school: 'university of waterloo',
+//     interests: ['rose'],
+//   },
+//   {
+//     id: '421ddb0a-2b78-4ad1-863d-a4dbbf95a057',
+//     name: 'Jonathan Cui',
+//     bio: 'brb calling grace',
+//     age: 4206942069,
+//     school: 'university of waterloo',
+//     interests: ['nodejs', 'battlecode', 'grace', 'wallstreetbets'],
+//   },
+// ]
 
 function Dashboard() {
   const [candidates, setCandidates] = useState(SAMPLE_DATA)
@@ -59,6 +60,18 @@ function Dashboard() {
       let {callID, swiper, swipee} = data;
       window.location.href = FRONTEND_ADDRESS + "/chat/" + callID; 
     });
+    
+    const getCandidates = async () => {
+      const { userID, genderPreference } = window.localStorage.userData
+      const response = await axios({
+        method: 'get',
+        url: `${BACKEND_ADDRESS}/users/candidates?userID=${userID}&genderPref=${genderPreference}`,
+      })
+      const candidates = response.data
+      setCandidates(candidates)
+    }
+
+    getCandidates()
   }, [])
 
   useEffect(() => {
@@ -70,16 +83,22 @@ function Dashboard() {
   }, [index])
 
   const handleSwipe = (isSwipeUp) => {
-    
     // Send swipe information to the backend
     const swipeResponse = await axios({
       method: 'post',
       url: `${BACKEND_ADDRESS}/swipes/swipe`,
       data: {
+<<<<<<< HEAD
         swiper : window.localStorage.getItem('userID'),
         swipee : candidates[index].id,
         interested : isSwipeUp
       }
+=======
+        swiper: '',
+        swipee: candidates[index].id,
+        interested: false,
+      },
+>>>>>>> 5fdfc58b2188a6fa879a23c622adebd2289c366f
     })
 
     const callObject = swipeResponse.data;

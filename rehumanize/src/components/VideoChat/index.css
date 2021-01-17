@@ -3,19 +3,52 @@ html {
   background-color: white;
 }
 
+.container {
+  display: flex; /* or inline-flex */
+  justify-content: left;
+}
+
 .OT_subscriber {
-  border-radius: 20px;
-  border: 4px solid black;
   float: left;
-  margin-left: 1em;
+  /* border: 5px dashed red; */
+  margin-bottom: 48px;
+  border-radius: 16px;
+  box-shadow: -3px 6px 9px rgba(0, 0, 0, 0.5);
 }
 
 .OT_publisher {
   float: left;
-  border: 2px solid black;
-  border-radius: 10px;
+  margin-bottom: 48px;
+  border-radius: 8px;
+  box-shadow: -3px 6px 9px rgba(0, 0, 0, 0.5);
+  transition: all 0.4s ease;
+  /* border: 5px dashed green; */
 }
 
 .error {
   color: red;
+}
+
+.ui-area {
+  /* border: 5px dashed blue; */
+  margin-left: 48px;
+}
+.prompt-header {
+  /* border: 5px dashed green; */
+  font-family: 'Merriweather', serif !important;
+  font-size: 36px !important;
+  font-weight: 400 !important;
+  line-height: 64px !important;
+}
+.prompt {
+  /* border: 5px dashed red; */
+  font-family: 'Merriweather', serif !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: 36px !important;
+}
+
+.new-prompt-btn {
+  margin-top: 10px;
+  font-size: 1rem !important;
 }

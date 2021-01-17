@@ -19,8 +19,11 @@ const signInWithGoogle = async () => {
     data: userData,
   })
   console.log(loginResponse.data)
-  window.localStorage.setItem('userID', loginResponse.data.userData.id);
-  window.location.href = loginResponse.data.redirectUrl;
+  const { redirectUrl, userData } = loginResponse.data
+  
+  window.localStorage.userData = userData
+  window.localStorage.setItem('userID', userData.id);
+  window.location.href = redirectUrl
 }
 
 export { auth, signInWithGoogle }

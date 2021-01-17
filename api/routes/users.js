@@ -34,7 +34,7 @@ router.post('/login', async (req, res) => {
 router.get('/profile', async (req, res) => {
   var { userID } = req.query
   console.log(userID)
-  var response = await getUserProfile(userID)
+  var response = await queries.getUserProfile(userID)
   res.send(response)
 })
 
@@ -67,16 +67,22 @@ router.put('/profile', async (req, res) => {
 router.get('/candidates', async (req, res) => {
   var { userID, genderPref } = req.query
   console.log(userID, genderPref)
-  var response = await getCandidateProfiles(userID, genderPref)
+  var response = await queries.getCandidateProfiles(userID, genderPref)
   res.send(response)
 })
 
-router.get('/swipedBy', (req, res) => {
-  res.send('GET swipedBy')
+router.get('/swipesBy', async (req, res) => {
+  var { userID } = req.query
+  console.log(userID)
+  var response = await queries.getSwipesOn(userID)
+  res.send(response)
 })
 
-router.get('/swipedOn', (req, res) => {
-  res.send('GET swipedOn')
+router.get('/swipesOn', async (req, res) => {
+  var { userID } = req.query
+  console.log(userID)
+  var response = await queries.getSwipesBy(userID)
+  res.send(response)
 })
 
 module.exports = router
