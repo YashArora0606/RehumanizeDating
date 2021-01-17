@@ -10,7 +10,7 @@ function Routes() {
     <Switch>
       <Route exact path="/" component={Landing} />
       <Route exact path="/dashboard" component={Dashboard} />
-      <Route exact path="/video" component={VideoChat} />
+      <Route exact path="/chat" component={VideoChat} />
     </Switch>
   )
 }
