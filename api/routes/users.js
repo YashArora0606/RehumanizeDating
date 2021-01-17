@@ -71,12 +71,18 @@ router.get('/candidates', async (req, res) => {
   res.send(response)
 })
 
-router.get('/swipedBy', (req, res) => {
-  res.send('GET swipedBy')
+router.get('/swipesBy', (req, res) => {
+  var { userID } = req.query
+  console.log(userID)
+  var response = await getSwipesOn(userID)
+  res.send(response)
 })
 
-router.get('/swipedOn', (req, res) => {
-  res.send('GET swipedOn')
+router.get('/swipesOn', (req, res) => {
+  var { userID } = req.query
+  console.log(userID)
+  var response = await getSwipesBy(userID)
+  res.send(response)
 })
 
 module.exports = router
