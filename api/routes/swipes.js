@@ -1,13 +1,17 @@
 const express = require('express')
 const router = express.Router()
 
-router.post('/swipe', (req, res) => {
-  
-  var {swiper, swipee, interested} = req.query;
+const {getSwipedOn, insertSwipe} = require('../database/queries')
 
-  
-  
-  res.send('POST swipe')
+router.post('/swipe', (req, res) => {
+  const { swiper, swipee, interested } = req.query
+
+  const usersSwipedOn = await getSwipedOn(swiper)
+  const wasSwiped = usersSwipedOn !== null && usersSwipedOn.includes(swipee)
+  const scheduled = interested && wasSwiped
+  const insertedSwipe = await insertSwipe(swiper, swipee, interested, scheduled)
+
+  res.send(insertedSwipe)
 })
 
 module.exports = router
