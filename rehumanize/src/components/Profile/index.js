@@ -7,7 +7,8 @@ import CONFIG from '../../config'
 const { BACKEND_ADDRESS, FRONTEND_ADDRESS } = CONFIG
 
 function Profile({ history }) {
-  const [name, setName] = useState('')
+  const [gender, setGender] = useState('')
+  const [genderPreference, setGenderPreference] = useState('')
   const [bio, setBio] = useState('')
   const [age, setAge] = useState('')
   const [school, setSchool] = useState('')
@@ -15,8 +16,11 @@ function Profile({ history }) {
 
   const handleChange = (event, field) => {
     switch (field) {
-      case 'name':
-        setName(event.target.value)
+      case 'gender':
+        setGender(event.target.value)
+        return
+      case 'genderPreference':
+        setGenderPreference(event.target.value)
         return
       case 'bio':
         setBio(event.target.value)
@@ -36,7 +40,8 @@ function Profile({ history }) {
   const handleSubmit = async (event) => {
     try {
       const profileData = {
-        name,
+        gender,
+        genderPreference,
         bio,
         age: parseInt(age, 10),
         school,
@@ -60,10 +65,17 @@ function Profile({ history }) {
           <div className="profileContainer">
             <h1 className="profileTitle">My profile</h1>
             <div className="profileRow">
-              <h4>name</h4>
+              <h4>gender</h4>
               <input
-                name="name"
-                onChange={(event) => handleChange(event, 'name')}
+                name="gender"
+                onChange={(event) => handleChange(event, 'gender')}
+              />
+            </div>
+            <div className="profileRow">
+              <h4>gender preference</h4>
+              <input
+                name="genderPreference"
+                onChange={(event) => handleChange(event, 'genderPreference')}
               />
             </div>
             <div className="profileRow">
