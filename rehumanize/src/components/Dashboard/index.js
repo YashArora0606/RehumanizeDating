@@ -69,7 +69,7 @@ function Dashboard() {
       method: 'post',
       url: `${BACKEND_ADDRESS}/swipes/swipe`,
       data: {
-        swiper : '',
+        swiper : window.localStorage.getItem('userID'),
         swipee : candidates[index].id,
         interested : false
       }
