@@ -34,7 +34,9 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 
-app.use('/users', usersRouter)
+app.use('/users', usersRouter);
+app.use('/calls', callsRouter);
+app.use('/swipes', swipesRouter);
 
 app.get('/', (req, res) => {
   res.send('RehumanizeDating')

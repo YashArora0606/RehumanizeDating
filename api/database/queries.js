@@ -30,7 +30,7 @@ const createUser = async () => {
             RETURNING ID;`
             
   const result = await pool.query(query, []);
-  return result;
+  return result ? result.rows[0].id : null ;
 }
 
 const updateUserName = async (userID, name) => {
@@ -113,7 +113,7 @@ const createCall = async(complete, userID, matchUserID, sessionID, startTime, en
       RETURNING ID;
     `
     const result = await pool.query(query, [complete, userID, matchUserID, sessionID, startTime, endTime]);
-    return result ? result.rows[0].ID : null;
+    return result ? result.rows[0].id : null;
 }
 
 const updateSessionID = async (ID, sessionID) => {
