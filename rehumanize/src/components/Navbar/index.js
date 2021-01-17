@@ -15,8 +15,11 @@ function Navbar() {
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
-        <a className="navbar-item" href={FRONTEND_ADDRESS}>
-          <h3>💖</h3>
+        <a
+          className="navbar-item"
+          href={`${FRONTEND_ADDRESS}/${authenticated ? 'dashboard' : ''}`}
+        >
+          <h3>🖤</h3>
         </a>
       </div>
 
@@ -28,6 +31,9 @@ function Navbar() {
             </a>
             <a className="navbar-item" href={`${FRONTEND_ADDRESS}/chat`}>
               CHAT
+            </a>
+            <a className="navbar-item" href={`${FRONTEND_ADDRESS}/profile`}>
+              PROFILE
             </a>
           </div>
         </div>

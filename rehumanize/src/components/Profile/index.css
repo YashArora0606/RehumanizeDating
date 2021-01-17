@@ -1,0 +1,26 @@
+.profileContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.profileRow {
+  display: block;
+  margin: 24px 0;
+}
+
+.profileRow > h4 {
+  display: inline-block;
+  width: 300px;
+}
+
+.profileRow > input {
+  display: inline-block;
+  width: 300px;
+  font-size: 1.5rem;
+}
+
+.submitButton {
+  margin-top: 16px;
+}

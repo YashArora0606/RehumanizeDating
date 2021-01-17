@@ -22,6 +22,17 @@ const getUserProfile = async (userID) => {
   return result ? result.rows[0] : null
 }
 
+// All profiles that don't match input users id and that
+const getCandidateProfiles = async (userID, genderPreference) => {
+  const query = `
+    SELECT * FROM users
+    WHERE ID!=$1
+    AND Gender=$2;
+    `
+  const result = await pool.query(query, [userID, genderPreference])
+  return result ? result.rows : null
+}
+
 const createUser = async () => {
   const query = `
         INSERT
@@ -40,6 +51,24 @@ const updateUserName = async (userID, name) => {
       WHERE ID = $1;`
 
   const result = await pool.query(query, [userID, name])
+}
+
+const updateUserGender = async (userID, gender) => {
+  const query = `
+      UPDATE users
+      SET Gender = $2
+      WHERE ID = $1;`
+
+  const result = await pool.query(query, [userID, gender])
+}
+
+const updateUserGenderPreference = async (userID, genderPreference) => {
+  const query = `
+      UPDATE users
+      SET GenderPreference = $2
+      WHERE ID = $1;`
+
+  const result = await pool.query(query, [userID, genderPreference])
 }
 
 const updateUserBio = async (userID, bio) => {
@@ -178,8 +207,11 @@ testCreateCall()
 
 module.exports = {
   getUserProfile,
+  getCandidateProfiles,
   createUser,
   updateUserName,
+  updateUserGender,
+  updateUserGenderPreference,
   updateUserBio,
   updateUserAge,
   updateUserInterests,

@@ -1,5 +1,7 @@
 const {
   updateUserName,
+  updateUserGender,
+  updateUserGenderPreference,
   updateUserBio,
   updateUserAge,
   updateUserSchool,
@@ -10,6 +12,8 @@ const {
 const updateUserProfile = async (
   userID,
   name,
+  gender,
+  genderPreference,
   bio,
   age,
   school,
@@ -21,6 +25,8 @@ const updateUserProfile = async (
     return {
       userID: null,
       name: null,
+      gender: null,
+      genderPreference: null,
       bio: null,
       age: null,
       school: null,
@@ -31,6 +37,12 @@ const updateUserProfile = async (
 
   if (name != undefined) {
     await updateUserName(userID, name)
+  }
+  if (gender != undefined) {
+    await updateUserGender(userID, gender)
+  }
+  if (genderPreference != undefined) {
+    await updateUserGenderPreference(userID, genderPreference)
   }
   if (bio != undefined) {
     await updateUserBio(userID, bio)
@@ -51,6 +63,8 @@ const updateUserProfile = async (
   return {
     userID: userID,
     name: name,
+    gender: gender,
+    genderPreference: genderPreference,
     bio: bio,
     age: age,
     school: school,
@@ -58,6 +72,8 @@ const updateUserProfile = async (
     profilePic: profilePic,
   }
 }
+
+//updateUserProfile('2241f73b-7b79-46c7-99cb-a9c1bf8a558b', 'Armanya', '19')
 
 module.exports = {
   updateUserProfile,
