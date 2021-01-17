@@ -12,12 +12,23 @@ var OpenTok = require('opentok'),
 
 // THIS FUNCTION MAY BE PROBLEMATIC -- check for bugs starting here
 // creates a session and stores it in the associated call on DB
-var createSession = (callID, cbAfterSessionCreated) => {
+const createSessionWithToken = (callID, resolve, reject) => {
   console.log('** Creating session')
   opentok.createSession(async (err, session) => {
     console.log('** Create session callback: ', session)
     if (err) return console.log(err)
-    await cbAfterSessionCreated(callID, session.sessionId)
+    
+    let sessionID = session.sessionId;
+    await updateSessionID(callID, sessionID);
+
+    if (sessionID != null && sessionID.length > 0) {
+        token = generateToken(sessionID)
+        resolve({ sessionID: sessionID, token: token })
+    } else {
+        console.error('Unable to create new session and token')
+        reject({ sessionID: null, token: null })
+    }
+
     console.log('** Create session callback done')
     return
   })
@@ -40,24 +51,24 @@ const getSessionAndToken = async (callID) => {
   } else {
     //session doesn't exist
     sessionAndTokenPromise = new Promise((resolve, reject) => {
-      createSession(callID, async (callID, sessionID) => {
-        if (sessionID != null && sessionID.length > 0) {
-          token = generateToken(sessionID)
-          resolve({ sessionID: sessionID, token: token })
-        } else {
-          console.error('Unable to create new session and token')
-          reject({ sessionID: null, token: null })
-        }
-      })
+      createSessionWithToken(callID, resolve, reject);
     })
 
-    var sessionAndToken = await sessionAndTokenPromise
+    const sessionAndToken = await sessionAndTokenPromise
     return sessionAndToken
   }
+}
+
+const createSession = (callID) => {
+    opentok.createSession(async (err, session) => {
+        if (err) return console.log(err)
+        await updateSessionID(callID, sessionID);
+    })
 }
 
 // TO FORCE A DISCONNECT WHEN TIMER ENDS https://tokbox.com/developer/rest/#forceDisconnect
 
 module.exports = {
   getSessionAndToken,
+  createSession,
 }

@@ -1,6 +1,8 @@
 // we must create a new CALL in the DB when people match
 
 const { insertSwipe, createCall, getSwipesBy } = require('../database/queries');
+const {sendMatchAlert} = require('./io');
+const { createSession } = require('./openTok');
 
 const processSwipe = async (swiper, swipee, interested) => {
     const usersSwipedBy = await getSwipesBy(swiper);
@@ -16,7 +18,9 @@ const processSwipe = async (swiper, swipee, interested) => {
     // Returns a call object if the swipe resulted in a match, null otherwise
     let callObj = null;
     if (scheduled === true){
-      callObj = createCall(false, swiper, swipee, '', '', '');
+        callObj = await createCall(false, swiper, swipee, '', '', '');
+        createSession(callObj.id);
+        sendMatchAlert(callObj.id, swiper, swipee);
     }    
     return callObj
 }

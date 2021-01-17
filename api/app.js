@@ -11,6 +11,10 @@ const callsRouter = require('./routes/calls')
 const { FRONTEND_ADDRESS } = require('./config')
 
 const app = express()
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
+
+
 const PORT = process.env.PORT || 3000
 
 app.use(
@@ -46,4 +50,4 @@ app.listen(PORT, () => {
   console.log(`RehumanizeDating listening on PORT ${PORT}`);
 })
 
-module.exports = app
+module.exports = {app, io}
