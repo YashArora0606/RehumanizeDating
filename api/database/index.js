@@ -34,7 +34,7 @@ pool.connect(function (err, client, done) {
       function (next) {
         // Create the 'users' table.
         client.query(
-          'CREATE TABLE IF NOT EXISTS users (ID UUID PRIMARY KEY DEFAULT gen_random_uuid(), Name STRING, Gender STRING, GenderPreference STRING, Bio STRING, Age INT, School STRING, Interests STRING[], ProfilePicture STRING);',
+          'CREATE TABLE IF NOT EXISTS users (ID UUID PRIMARY KEY DEFAULT gen_random_uuid(), Name STRING, Email String, Gender STRING, GenderPreference STRING, Bio STRING, Age INT, School STRING, Interests STRING[], ProfilePicture STRING);',
           next,
         )
       },
