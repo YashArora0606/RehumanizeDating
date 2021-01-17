@@ -105,9 +105,32 @@ const result = await pool.query(query, [swiper]);
 return result ? result.rows[0] : null;
 }
 
+const createCall = async(complete, userID, matchUserID, sessionID, startTime, endTime) => {
+  const query = `
+    INSERT INTO 
+      calls (Complete, UserID, MatchUserID, SessionID, StartTime, EndTime)
+      VALUES ($1, $2, $3, $4, $5, $6);
+    `
 
+    const result = await pool.query(query, [complete, userID, matchUserID, sessionID, startTime, endTime]);
+}
 
-//  const getCalls
+const updateSessionID = async (ID, sessionID) => {
+  const query = `
+    UPDATE calls
+    SET SessionID = $2
+    WHERE ID = $1;
+    `
+    const result = await pool.query(query, [ID, sessionID]);
+}
+
+const getCall = async (ID) => {
+  const query = `
+    SELECT * FROM calls
+    WHERE ID = $1;
+    `
+    const result = await pool.query(query, [ID]);
+}
 
 module.exports = {
   getUserProfile,
@@ -119,5 +142,8 @@ module.exports = {
   updateUserSchool,
   insertSwipe, 
   getSwipedBy,
-  getSwipedOn
+  getSwipedOn,
+  createCall,
+  updateSessionID,
+  getCall
 }
