@@ -103,7 +103,7 @@ const insertSwipe = async (swiper, swipee, interested, scheduled) => {
   return result ? result.rows[0] : null
 }
 
-const getSwipedBy = async (swipee) => {
+const getSwipesOn = async (swipee) => {
   const query = `
     SELECT * FROM swipes
     WHERE swipee=$1;
@@ -112,7 +112,7 @@ const getSwipedBy = async (swipee) => {
   return result ? result.rows : null
 }
 
-const getSwipedOn = async (swiper) => {
+const getSwipesBy = async (swiper) => {
   const query = `
     SELECT * FROM swipes
     WHERE swiper=$1;
@@ -133,7 +133,7 @@ const createCall = async (
     INSERT INTO
       calls (Complete, UserID, MatchUserID, SessionID, StartTime, EndTime)
       VALUES ($1, $2, $3, $4, $5, $6)
-      RETURNING ID;
+      RETURNING *;
     `
   const result = await pool.query(query, [
     complete,
@@ -186,8 +186,8 @@ module.exports = {
   updateUserProfilePicture,
   updateUserSchool,
   insertSwipe,
-  getSwipedBy,
-  getSwipedOn,
+  getSwipesOn,
+  getSwipesBy,
   createCall,
   updateSessionID,
   getCall,

@@ -11,6 +11,8 @@ router.post('/login', (req, res) => {
   res.status(200).send({
     redirectUrl: `${FRONTEND_ADDRESS}/dashboard`,
   })
+
+  // RETURN THE USER ID TO THE USER
 })
 
 router.get('/profile', (req, res) => {
