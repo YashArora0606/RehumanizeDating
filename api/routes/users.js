@@ -13,7 +13,7 @@ router.post('/login', (req, res) => {
   })
 })
 
-router.get('/profile', (req, res) => {
+router.get('/profile', async (req, res) => {
   var { userID } = req.query
   console.log(userID)
   var response = await getUserProfile(userID)
@@ -21,7 +21,17 @@ router.get('/profile', (req, res) => {
 })
 
 router.put('/profile', async (req, res) => {
-  var { userID, name, gender, genderPreference, bio, age, school, interests, profilePic } = req.body
+  var {
+    userID,
+    name,
+    gender,
+    genderPref,
+    bio,
+    age,
+    school,
+    interests,
+    profilePic,
+  } = req.body
   var response = await updateUserProfile(
     userID,
     name,
@@ -36,10 +46,10 @@ router.put('/profile', async (req, res) => {
   res.send(response)
 })
 
-router.get('/candidates', (req, res) => {
-  var { userID, genderPreference } = req.query
-  console.log(userID, genderPreference)
-  var response = await getCandidateProfiles(userID, genderPreference)
+router.get('/candidates', async (req, res) => {
+  var { userID, genderPref } = req.query
+  console.log(userID, genderPref)
+  var response = await getCandidateProfiles(userID, genderPref)
   res.send(response)
 })
 
