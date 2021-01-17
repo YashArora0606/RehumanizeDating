@@ -13,7 +13,7 @@ const updateUserProfile = async (
   userID,
   name,
   gender,
-  genderPref,
+  genderPreference,
   bio,
   age,
   school,
@@ -26,7 +26,7 @@ const updateUserProfile = async (
       userID: null,
       name: null,
       gender: null,
-      genderPref: null,
+      genderPreference: null,
       bio: null,
       age: null,
       school: null,
@@ -41,8 +41,8 @@ const updateUserProfile = async (
   if (gender != undefined) {
     await updateUserGender(userID, gender)
   }
-  if (genderPref != undefined) {
-    await updateUserGenderPreference(userID, genderPref)
+  if (genderPreference != undefined) {
+    await updateUserGenderPreference(userID, genderPreference)
   }
   if (bio != undefined) {
     await updateUserBio(userID, bio)
@@ -64,7 +64,7 @@ const updateUserProfile = async (
     userID: userID,
     name: name,
     gender: gender,
-    genderPref: genderPref,
+    genderPreference: genderPreference,
     bio: bio,
     age: age,
     school: school,
