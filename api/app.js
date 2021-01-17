@@ -41,7 +41,7 @@ app.get('/', (req, res) => {
 })
 
 app.listen(PORT, () => {
-  console.log(`RehumanizeDating listening on PORT ${PORT}`)
+  console.log(`RehumanizeDating listening on PORT ${PORT}`);
 })
 
 module.exports = app

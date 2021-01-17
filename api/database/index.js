@@ -1,6 +1,8 @@
 const async = require('async')
 const fs = require('fs')
-const { Pool } = require('pg')
+const path = require('path')
+
+const pg = require('pg')
 
 // Connect to the database.
 const config = {
@@ -10,7 +12,7 @@ const config = {
   database: 'mature-lynx-290.defaultdb',
   port: 26257,
   ssl: {
-    ca: fs.readFileSync('cc-ca.crt').toString(),
+    ca: fs.readFileSync(path.join(__dirname,'/cc-ca.crt')).toString(),
   },
 }
 
@@ -32,36 +34,41 @@ pool.connect(function (err, client, done) {
       function (next) {
         // Create the 'users' table.
         client.query(
-          'CREATE TABLE IF NOT EXISTS users (ID INT PRIMARY KEY, Name VARCHAR NOT NULL, School VARCHAR NOT NULL, Interests );',
+          'CREATE TABLE IF NOT EXISTS users (ID UUID PRIMARY KEY DEFAULT gen_random_uuid(), Name STRING, Age INT, School STRING, Interests STRING[], ProfilePicture STRING);',
           next,
         )
       },
       function (results, next) {
-        // Insert two rows into the 'accounts' table.
+        // Create the 'swipes' table.
         client.query(
-          'INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250);',
+          'CREATE TABLE IF NOT EXISTS swipes (ID UUID PRIMARY KEY DEFAULT gen_random_uuid(), Swiper UUID REFERENCES users(ID) ON UPDATE CASCADE ON DELETE CASCADE, Swipee UUID REFERENCES users(ID) ON UPDATE CASCADE ON DELETE CASCADE, Interested BOOL, Scheduled BOOL);',
           next,
-        )
+        );
       },
       function (results, next) {
-        // Print out account balances.
-        client.query('SELECT id, balance FROM accounts;', next)
+        // Create the 'availabilities' table.
+        client.query(
+          'CREATE TABLE IF NOT EXISTS availabilities (ID UUID PRIMARY KEY DEFAULT gen_random_uuid(), UserID UUID REFERENCES users(ID), Sunday JSONB, Monday JSONB, Tuesday JSONB, Wednesday JSONB, Thursday JSONB, Friday JSONB, Saturday JSONB);',
+          next,
+        );
+      },
+      function (results, next) {
+        // Create the 'calls' table.
+        client.query(
+          'CREATE TABLE IF NOT EXISTS calls (ID UUID PRIMARY KEY DEFAULT gen_random_uuid(), Complete BOOL, UserID UUID REFERENCES users(ID), SessionID STRING, StartTime STRING, EndTime STRING);',
+          next,
+        );
       },
     ],
     function (err, results) {
       if (err) {
-        console.error('Error inserting into and selecting from accounts: ', err)
-        finish()
+        console.error('Error creating tables: ', err);
+        finish();
       }
 
-      console.log('Initial balances:')
-      results.rows.forEach(function (row) {
-        console.log(row)
-      })
+      console.log('Finished creating database tables');
+      console.log(results);
+    });
+});
 
-      finish()
-    },
-  )
-})
-
-export default pool
+module.exports = pool;
