@@ -5,6 +5,11 @@ const router = express.Router()
 
 router.get('/login', (req, res) => {
   queries.createUser()
+  res.send('login');
+})
+
+router.post('/login', (req, res) => {
+  console.log(req.body)
   res.send('login')
 })
 

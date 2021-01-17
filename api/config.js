@@ -1,6 +1,6 @@
 const DEV_CONFIG = {
-  BACKEND_ADDRESS: 'localhost:3000',
-  FRONTEND_ADDRESS: 'localhost:3001',
+  BACKEND_ADDRESS: 'http://localhost:3000',
+  FRONTEND_ADDRESS: 'http://localhost:3001',
 }
 
 const PROD_CONFIG = {
