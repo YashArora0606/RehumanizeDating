@@ -1,7 +1,7 @@
 // we must create a new CALL in the DB when people match
 
 const { insertSwipe, createCall, getSwipesBy } = require('../database/queries');
-const {sendMatchAlert} = require('./io');
+const {sendMatchAlert} = require('./socket');
 const { createSession } = require('./openTok');
 
 const processSwipe = async (swiper, swipee, interested) => {

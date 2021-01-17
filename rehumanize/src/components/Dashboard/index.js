@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
+import CONFIG from '../../config'
+
+const { BACKEND_ADDRESS } = CONFIG
 
 import './index.css'
 
 const SAMPLE_DATA = [
   {
+    id: '007e199a-9646-4730-98fa-633032169758',
     name: 'Oustan Ding',
     bio: 'i fucking hate css',
     age: 69,
@@ -14,6 +18,7 @@ const SAMPLE_DATA = [
       'https://lh3.googleusercontent.com/a-/AOh14GjG95TCQctGJ4pnLkDrI8I4YCLydEt3SA9B4Ml0yw',
   },
   {
+    id: '0384ea4b-27b3-4a7d-8bbb-329180da8e8e',
     name: 'Armanya Dalmia',
     bio: 'kinky sex 7/7',
     age: 420,
@@ -21,6 +26,7 @@ const SAMPLE_DATA = [
     interests: ['hentai', 'lit'],
   },
   {
+    id: '3a5b3629-2c4a-47e6-8d0e-1f54794c9ff8',
     name: 'Yash Arora',
     bio: 'rose simp all day every day',
     age: 42069,
@@ -28,6 +34,7 @@ const SAMPLE_DATA = [
     interests: ['rose'],
   },
   {
+    id: '421ddb0a-2b78-4ad1-863d-a4dbbf95a057',
     name: 'Jonathan Cui',
     bio: 'brb calling grace',
     age: 4206942069,
@@ -56,6 +63,18 @@ function Dashboard() {
   }, [index])
 
   const handleSwipe = (isSwipeUp) => {
+    
+    // Send swipe information to the backend
+    axios({
+      method: 'post',
+      url: `${BACKEND_ADDRESS}/swipes/swipe`,
+      data: {
+        swiper : '',
+        swipee : candidates[index].id,
+        interested : false
+      }
+    })
+
     setPreference(isSwipeUp ? 'up' : 'down')
     setTimeout(() => {
       setIsTransitioning(true)
