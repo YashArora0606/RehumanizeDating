@@ -5,13 +5,29 @@ const router = express.Router()
 
 const { FRONTEND_ADDRESS } = require('../config')
 
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   console.log(req.body)
   console.log(FRONTEND_ADDRESS)
-  res.status(200).send({
-    redirectUrl: `${FRONTEND_ADDRESS}/dashboard`,
-  })
-
+  const { email, displayName: name, photoURL } = req.body
+  const profilePic = photoURL && photoURL.split('=s96')[0]
+  const userData = await queries.getUserProfileFromEmail(email)
+  if (userData === null) {
+    const userID = await queries.createUser()
+    const savedUserData = await updateUserProfile({
+      userID,
+      name,
+      profilePic,
+    })
+    res.status(200).send({
+      redirectUrl: `${FRONTEND_ADDRESS}/dashboard`,
+      userData: savedUserData,
+    })
+  } else {
+    res.status(200).send({
+      redirectUrl: `${FRONTEND_ADDRESS}/dashboard`,
+      userData,
+    })
+  }
   // RETURN THE USER ID TO THE USER
 })
 
@@ -34,7 +50,7 @@ router.put('/profile', async (req, res) => {
     interests,
     profilePic,
   } = req.body
-  var response = await updateUserProfile(
+  var response = await updateUserProfile({
     userID,
     name,
     gender,
@@ -44,7 +60,7 @@ router.put('/profile', async (req, res) => {
     school,
     interests,
     profilePic,
-  )
+  })
   res.send(response)
 })
 

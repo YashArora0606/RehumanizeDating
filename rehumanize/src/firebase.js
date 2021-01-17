@@ -11,7 +11,7 @@ const auth = firebase.auth()
 const provider = new firebase.auth.GoogleAuthProvider()
 const signInWithGoogle = async () => {
   const response = await auth.signInWithPopup(provider)
-  const userData = response.data
+  const userData = response.user
   window.localStorage.authenticated = true
   const loginResponse = await axios({
     method: 'post',

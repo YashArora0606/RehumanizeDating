@@ -9,7 +9,7 @@ const {
   updateUserProfilePicture,
 } = require('../database/queries')
 
-const updateUserProfile = async (
+const updateUserProfile = async ({
   userID,
   name,
   gender,
@@ -19,8 +19,8 @@ const updateUserProfile = async (
   school,
   interests,
   profilePic,
-) => {
-  if (userID == undefined) {
+}) => {
+  if (userID === undefined) {
     console.error('No User ID provided')
     return {
       userID: null,
@@ -35,28 +35,28 @@ const updateUserProfile = async (
     }
   }
 
-  if (name != undefined) {
+  if (name !== undefined) {
     await updateUserName(userID, name)
   }
-  if (gender != undefined) {
+  if (gender !== undefined) {
     await updateUserGender(userID, gender)
   }
-  if (genderPreference != undefined) {
+  if (genderPreference !== undefined) {
     await updateUserGenderPreference(userID, genderPreference)
   }
-  if (bio != undefined) {
+  if (bio !== undefined) {
     await updateUserBio(userID, bio)
   }
-  if (age != undefined) {
+  if (age !== undefined) {
     await updateUserAge(userID, age)
   }
-  if (school != undefined) {
+  if (school !== undefined) {
     await updateUserSchool(userID, school)
   }
-  if (interests != undefined) {
+  if (interests !== undefined) {
     await updateUserInterests(userID, interests)
   }
-  if (profilePic != undefined) {
+  if (profilePic !== undefined) {
     await updateUserProfilePicture(userID, profilePic)
   }
 

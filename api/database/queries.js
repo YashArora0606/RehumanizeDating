@@ -1,5 +1,14 @@
 const pool = require('./index')
 
+const getUserProfileFromEmail = async (email) => {
+  const query = `
+    SELECT * FROM users WHERE email = $1
+  `
+  const result = await pool.query(query, [email])
+
+  return result ? result.rows[0] : null
+}
+
 const getUserProfile = async (userID) => {
   const query1 = `
             SELECT *
@@ -206,6 +215,7 @@ const testCreateCall = async () => {
 testCreateCall()
 
 module.exports = {
+  getUserProfileFromEmail,
   getUserProfile,
   getCandidateProfiles,
   createUser,
