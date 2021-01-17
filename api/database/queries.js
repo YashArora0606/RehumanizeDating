@@ -23,13 +23,13 @@ const getUserProfile = async (userID) => {
 }
 
 // All profiles that don't match input users id and that
-const getCandidateProfiles = async (userID, genderPref) => {
+const getCandidateProfiles = async (userID, genderPreference) => {
   const query = `
     SELECT * FROM users
     WHERE ID!=$1
     AND GenderPreference=$2;
     `
-  const result = await pool.query(query, [userID, genderPref])
+  const result = await pool.query(query, [userID, genderPreference])
   return result ? result.rows : null
 }
 
@@ -62,13 +62,13 @@ const updateUserGender = async (userID, gender) => {
   const result = await pool.query(query, [userID, gender])
 }
 
-const updateUserGenderPreference = async (userID, genderPref) => {
+const updateUserGenderPreference = async (userID, genderPreference) => {
   const query = `
       UPDATE users
       SET GenderPreference = $2
       WHERE ID = $1;`
 
-  const result = await pool.query(query, [userID, genderPref])
+  const result = await pool.query(query, [userID, genderPreference])
 }
 
 const updateUserBio = async (userID, bio) => {
