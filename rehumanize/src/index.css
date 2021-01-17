@@ -12,7 +12,7 @@ code {
     monospace;
 }
 
-@media(max-width: 500px) {
+@media (max-width: 500px) {
   .reverse-columns {
     flex-direction: column-reverse;
     display: flex;

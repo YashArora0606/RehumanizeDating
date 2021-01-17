@@ -1,0 +1,88 @@
+.dashboardContainer {
+  display: flex;
+  flex: 1 1 auto;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 20%;
+}
+
+.innerDashboardContainer {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.candidateContainer {
+  /* position: relative; */
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+}
+
+.currentCandidate,
+.nextCandidate {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  position: absolute;
+  top: -96px;
+  -webkit-transition: none;
+  -moz-transition: none;
+  -o-transition: none;
+  transition: none;
+}
+
+.transparent {
+  opacity: 0;
+  -webkit-transition: opacity 0.5s ease-in-out;
+  -moz-transition: opacity 0.5s ease-in-out;
+  -o-transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.smallContainer {
+  display: inline;
+  margin-right: 24px;
+  background-color: #fff;
+}
+
+.smallContainer > .bio {
+  color: #7a7a7a;
+  margin-bottom: 16px;
+}
+
+.red {
+  color: red;
+}
+
+.green {
+  color: green;
+}
+
+.info {
+  padding-left: 16px;
+  min-width: 600px;
+}
+
+.swipeContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+}
+
+.profilePicture {
+  display: inline-block;
+  height: 256px;
+  width: 256px;
+  margin: 16px;
+  /* border: 4px #7289da dashed; */
+  /* box-shadow: -32px 32px #000000; */
+  /* border-radius: 16px; */
+}
+
+.fas {
+  margin: 8px 0;
+  cursor: pointer;
+}
