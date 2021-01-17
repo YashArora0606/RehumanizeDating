@@ -22,7 +22,7 @@ const getUserProfile = async (userID) => {
   return result ? result.rows[0] : null
 }
 
-// All profiles that don't match input users id and that
+// All profiles that don't match input users id and that match genderPerformance
 const getCandidateProfiles = async (userID, genderPreference) => {
   const query = `
     SELECT * FROM users

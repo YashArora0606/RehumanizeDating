@@ -27,7 +27,7 @@ router.put('/profile', async (req, res) => {
     userID,
     name,
     gender,
-    genderPref,
+    genderPreference,
     bio,
     age,
     school,
