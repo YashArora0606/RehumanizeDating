@@ -75,6 +75,8 @@ export default class VideoChat extends React.Component {
         .then((data) => data.json())
         .then((data) => {
           console.log(data)
+
+          
           this.setState({
             authenticated: true,
             credentials: {

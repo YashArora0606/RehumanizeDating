@@ -30,10 +30,10 @@ const createUser = async () => {
             RETURNING ID;`
             
   const result = await pool.query(query, []);
-  return result ? result.rows[0] : null;
+  return result;
 }
 
- const updateUserName = async (userID, name) => {
+const updateUserName = async (userID, name) => {
   const query = `
       UPDATE users
       SET Name = $2
@@ -42,7 +42,7 @@ const createUser = async () => {
   const result = await pool.query(query, [userID, name]);
 }
 
- const updateUserAge = async (userID, age) => {
+const updateUserAge = async (userID, age) => {
   const query = `
       UPDATE users
       SET Age = $2
@@ -93,7 +93,7 @@ const result = await pool.query(query, [swiper, swipee, interested, scheduled]);
     WHERE swipee=$1;
     `
 const result = await pool.query(query, [swipee]);
-return result ? result.rows[0] : null;
+return result ? result.rows : null;
 }
 
  const getSwipedOn = async (swiper) => {
@@ -102,17 +102,18 @@ return result ? result.rows[0] : null;
     WHERE swiper=$1;
     `
 const result = await pool.query(query, [swiper]);
-return result ? result.rows[0] : null;
+return result ? result.rows : null;
 }
 
 const createCall = async(complete, userID, matchUserID, sessionID, startTime, endTime) => {
   const query = `
     INSERT INTO 
       calls (Complete, UserID, MatchUserID, SessionID, StartTime, EndTime)
-      VALUES ($1, $2, $3, $4, $5, $6);
+      VALUES ($1, $2, $3, $4, $5, $6)
+      RETURNING ID;
     `
-
     const result = await pool.query(query, [complete, userID, matchUserID, sessionID, startTime, endTime]);
+    return result ? result.rows[0].ID : null;
 }
 
 const updateSessionID = async (ID, sessionID) => {
@@ -130,7 +131,21 @@ const getCall = async (ID) => {
     WHERE ID = $1;
     `
     const result = await pool.query(query, [ID]);
+    return result ? result.rows[0] : null;
 }
+
+
+const testCreateCall = async () => {
+  var user1 = await createUser();
+  var user2 = await createUser();
+  console.log("user1: ", user1);
+  console.log("user2: ", user2);
+  var callID = await createCall(true, user1, user2, '' , 'startTime', 'endTime');
+  console.log("callID: ",callID);
+}
+
+testCreateCall();
+
 
 module.exports = {
   getUserProfile,

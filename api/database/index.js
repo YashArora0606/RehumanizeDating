@@ -55,7 +55,7 @@ pool.connect(function (err, client, done) {
       function (results, next) {
         // Create the 'calls' table.
         client.query(
-          'CREATE TABLE IF NOT EXISTS calls (ID UUID PRIMARY KEY DEFAULT gen_random_uuid(), Complete BOOL, UserID UUID REFERENCES users(ID), SessionID STRING, StartTime STRING, EndTime STRING);',
+          'CREATE TABLE IF NOT EXISTS calls (ID UUID PRIMARY KEY DEFAULT gen_random_uuid(), Complete BOOL, UserID UUID REFERENCES users(ID), MatchUserID UUID REFERENCES users(ID), SessionID STRING, StartTime STRING, EndTime STRING);',
           next,
         );
       },
