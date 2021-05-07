@@ -24,6 +24,7 @@ code {
   font-size: 58px !important;
   font-weight: 400 !important;
   line-height: 64px !important;
+  width: 500px;
 }
 
 .subtitled {
@@ -31,4 +32,5 @@ code {
   font-size: 22px !important;
   font-weight: 400 !important;
   line-height: 36px !important;
+  width: 500px;
 }
